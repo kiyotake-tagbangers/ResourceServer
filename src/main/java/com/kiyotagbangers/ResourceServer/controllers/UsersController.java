@@ -1,5 +1,6 @@
 package com.kiyotagbangers.ResourceServer.controllers;
 
+import com.kiyotagbangers.ResourceServer.response.UserRest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,5 +24,11 @@ public class UsersController {
     @DeleteMapping(path = "/{id}")
     public String deleteUser(@PathVariable String id, @AuthenticationPrincipal Jwt jwt){
         return "Deleted user with id " + id + " and JWT subject" + jwt.getSubject();
+    }
+
+    @PostAuthorize("returnObject.userId == #jwt.subject")
+    @GetMapping(path = "/{id}")
+    public UserRest getUser(@PathVariable String id, @AuthenticationPrincipal Jwt jwt){
+        return new UserRest("Yamada", "Taro", "80b6edcf-2901-4924-9180-8c6d29ffdab0");
     }
 }
